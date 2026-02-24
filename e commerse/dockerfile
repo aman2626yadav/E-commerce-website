@@ -1,0 +1,23 @@
+# Start from Ubuntu official base image
+FROM ubuntu:latest
+
+# Avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install Nginx
+RUN apt-get update && \
+    apt-get install -y nginx && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Remove default nginx website
+RUN rm -rf /var/www/html/*
+
+# Copy your website files into the nginx html directory
+COPY . /var/www/html/
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]
